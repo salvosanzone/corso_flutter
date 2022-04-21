@@ -22,16 +22,14 @@ class TextFormFieldCustom extends StatelessWidget {
           borderSide: BorderSide(
             color: Colors.blue.shade700,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(32)),
+          borderRadius: const BorderRadius.all(Radius.circular(32)),
         ),
       ),
-      /*validator: (value) {
-        if(value != && value.isNotEmpty && value.contains('@')) {
+      validator: (value) {
+        if(value != null && value.isNotEmpty && value.contains('@'))
           return null;
-        } else {
           return 'mail non valida';
-        }
-      },*/
+      },
     );
   }
 }
