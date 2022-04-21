@@ -26,8 +26,9 @@ class TextFormFieldCustom extends StatelessWidget {
         ),
       ),
       validator: (value) {
-        if(value != null && value.isNotEmpty && value.contains('@'))
+        if(value != null && value.isNotEmpty && value.contains('@')) {
           return null;
+        }
           return 'mail non valida';
       },
     );
