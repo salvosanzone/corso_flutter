@@ -170,7 +170,7 @@ class DetailMeta extends StatelessWidget {
                             Text(
                               '£2000', style: TextStyle(fontWeight: FontWeight.bold),
                             ),Text(
-                              'Totale', style: TextStyle(color: Colors.grey),
+                              'Tot', style: TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
