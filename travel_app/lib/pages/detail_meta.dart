@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/components/custom_button.dart';
 import 'package:travel_app/components/picture_card.dart';
@@ -164,18 +165,23 @@ class DetailMeta extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-                          children: const [
+                          children: [
                             Text(
-                              '£2000', style: TextStyle(fontWeight: FontWeight.bold),
-                            ),Text(
-                              'Tot', style: TextStyle(color: Colors.grey),
+                              meta.maxPrice.toString(), style: TextStyle(fontWeight: FontWeight.bold),
+                            ),const Text(
+                              'Totale', style: TextStyle(color: Colors.grey),
                             ),
                           ],
                         ),
-
-
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                                'Book Now'
+                            ),
+                        ),
                       ],
                     ),
                   ),

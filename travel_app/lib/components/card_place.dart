@@ -17,6 +17,11 @@ class CardPlace extends StatelessWidget {
             builder: (context) => DetailMeta(meta),
         )),
         child: Card(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.white70, width: 1),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          shadowColor: Colors.black,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -27,6 +32,13 @@ class CardPlace extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 4,
+                            offset: Offset(4, 2), // Shadow position
+                          ),
+                        ],
                         image: DecorationImage(
                           image: NetworkImage(meta.imageUrl),
                           fit: BoxFit.cover,
