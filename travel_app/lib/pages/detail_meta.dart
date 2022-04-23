@@ -145,9 +145,10 @@ class DetailMeta extends StatelessWidget {
                         meta.description, style: const TextStyle(color: Colors.grey),
                       ),
                     ),
-                  ),SizedBox(
+                  ),
+                  const Text('Picture',style: TextStyle(fontSize: 24),),
+                  SizedBox(
                     height: 200,
-
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: const [
@@ -158,7 +159,7 @@ class DetailMeta extends StatelessWidget {
                         PictureCard('https://wallpaperaccess.com/full/5502889.jpg'),
                       ],
                     ),
-                  ),Container(
+                  ),const SizedBox(
                     height: 200,
                     child: PictureCard('https://t4.ftcdn.net/jpg/03/16/58/11/360_F_316581152_fRZlFTyoN3fWIoetsG5A0qu2k1UUdXP9.jpg'),
                   ),
@@ -170,7 +171,7 @@ class DetailMeta extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              meta.maxPrice.toString(), style: TextStyle(fontWeight: FontWeight.bold),
+                              meta.maxPrice.toString(), style: const TextStyle(fontWeight: FontWeight.bold),
                             ),const Text(
                               'Totale', style: TextStyle(color: Colors.grey),
                             ),
