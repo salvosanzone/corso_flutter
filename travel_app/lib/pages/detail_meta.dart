@@ -156,7 +156,6 @@ class DetailMeta extends StatelessWidget {
                         PictureCard('https://i.pinimg.com/736x/5a/76/0b/5a760bb28bd7cb200cf0e7029d8ad1d9.jpg'),
                         PictureCard('https://i.pinimg.com/originals/26/5b/d2/265bd2ea96d71ec45028ac4831cce2fe.jpg'),
                         PictureCard('https://www.vcbay.news/wp-content/uploads/2020/11/aqw.jpg'),
-                        PictureCard('https://wallpaperaccess.com/full/5502889.jpg'),
                       ],
                     ),
                   ),const SizedBox(

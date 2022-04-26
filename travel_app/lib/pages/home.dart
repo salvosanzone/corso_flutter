@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
-            const CustomSearchBar(show: true),
+            const CustomSearchBar(show: true, shouldGoToSearchPage: true,),
             const TitleCustom(text: 'Popular Place'),
             SizedBox(
               height: 150,
