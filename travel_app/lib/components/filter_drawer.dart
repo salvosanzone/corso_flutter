@@ -5,16 +5,14 @@ class FilterDrawer extends StatefulWidget {
   // valori ATTUALI dei filtri
   final RangeValues selectedRating;
   final String? selectedCountry;
+  final bool? available;
 
-  // funzione callback, ricerca i valori attuali quando clicco su Applica
-  final Function({int minRating, int maxRating, String? country}) setFilters;
+  // funzione callback, mette in relazione il Drawer con la pagina di ricerca
+  final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;
 
-  const FilterDrawer(
-      {required this.selectedRating,
-      required this.setFilters,
-      this.selectedCountry,
-      Key? key})
-      : super(key: key);
+  // costruttore
+  const FilterDrawer({required this.selectedRating, this.selectedCountry, required this.setFilters,
+    this.available = false, Key? key}) : super(key: key);
 
   @override
   _FilterDrawerState createState() => _FilterDrawerState();
@@ -24,6 +22,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
   // qui invece inserisco le variabili di STATO e contengono i valori dei filtri che ho applicato
   late RangeValues _selectedRating;
   String? _selectedCountry;
+  late bool? _available;
 
   // list degli stati
   late List<String> _countryList;
@@ -33,6 +32,8 @@ class _FilterDrawerState extends State<FilterDrawer> {
   void initState() {
     super.initState();
     _selectedRating = widget.selectedRating;
+    _selectedCountry = widget.selectedCountry;
+    _available = widget.available;
     _countryList =
         MetaTuristica.listaMete.map((meta) => meta.country).toSet().toList();
 
@@ -117,6 +118,20 @@ class _FilterDrawerState extends State<FilterDrawer> {
                           );
                         },
                       ),
+                      const SizedBox(height: 20),
+                      SwitchListTile(
+                        shape: RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(4),
+                        ),
+                          title: const Text('Available'),
+                          value: _available ?? false,
+                          onChanged: (toggle) {
+                            setState(() {
+                              _available = toggle;
+                            });
+                          }
+                      ),
                     ],
                   ),
                 ),
@@ -125,7 +140,13 @@ class _FilterDrawerState extends State<FilterDrawer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        _selectedRating = const RangeValues(1, 5);
+                        _selectedCountry = null;
+                        _available = null;
+                      });
+                    },
                     child: Text('Reset'),
                   ),
                   TextButton(
@@ -133,7 +154,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                       widget.setFilters(
                         minRating: _selectedRating.start.toInt(),
                         maxRating: _selectedRating.end.toInt(),
+                        country: _selectedCountry,
+                        available: _available == false ? null : _available,
                       );
+                      Navigator.of(context).pop();
                     },
                     child: Text('Applica'),
                   ),

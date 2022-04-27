@@ -19,9 +19,11 @@ class _SearchPageState extends State<SearchPage> {
   late final GlobalKey<ScaffoldState> _scaffoldKey;
 
   // queste varibili contengono i filtri applicati
+  String? _parolaDiRicerca;
   late int _minRating;
   late int _maxRating;
   String? _country;
+  bool? _available;
   @override
 
   // qui inizializzo le variabili, saranno i valori di default
@@ -33,31 +35,51 @@ class _SearchPageState extends State<SearchPage> {
     _scaffoldKey = GlobalKey();
   }
 
-  // creo una funzione, con parametri nominali, che passa i filtri selezionati/aggiunti dal drawer alla pagina di ricerca
+  // creo una funzione, essa mette in relazione questa pagina con il Drawer tramite un altra funzione chiamata setFilters
   void _setAdditionalFilters({
     int minRating = 1,
     int maxRating = 5,
     String? country,
+    bool? available
   })
    {
      _minRating = minRating;
      _maxRating = maxRating;
      _country = country;
+     _available = available;
+
+     // richiamo la funzione _filtraMete
+     _filtraMete(_parolaDiRicerca ?? '');
    }
 
-  _filtraMete(String parolaDiRicerca){
+   // creo la funzione _additionaFiltersFor() che mi restituisce un true o false
+  bool _additionaFiltersFor(MetaTuristica meta) {
+    return meta.rating >= _minRating
+        && meta.rating <= _maxRating
+        && (_country == null || meta.country == _country)
+        && (_available == null || _available == false || meta.available == _available);
+  }
+
+
+   // creo la funzione _filtraMete()
+  void _filtraMete(String parolaDiRicerca){
+    _parolaDiRicerca = parolaDiRicerca;
     if(parolaDiRicerca.isEmpty){
       setState(() {
-        _risultatiRicerca = MetaTuristica.listaMete;
+        // richiamo la funzione _additionaFiltersFor()
+        _risultatiRicerca = MetaTuristica.listaMete.where((meta) => _additionaFiltersFor(meta)).toList();
       });
     } else {
       setState(() {
         _risultatiRicerca = MetaTuristica.listaMete.where(
-                (meta) => meta.city.toLowerCase()
-                .contains(parolaDiRicerca.toLowerCase()))
+                (meta) {
+              return meta.city.toLowerCase().contains(parolaDiRicerca.toLowerCase())
+                  && _additionaFiltersFor(meta);
+            })
             .toList();
       });
-    }}
+    }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +124,13 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
       endDrawer: FilterDrawer(
+
+        // attributi che passo a FilterDrawer, varibili piu una funzione
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
         setFilters: _setAdditionalFilters,
+        selectedCountry: _country,
+        available: _available,
+
       ),
     );
   }
