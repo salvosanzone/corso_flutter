@@ -41,19 +41,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // adesso che ho inzializzata posso richiamarla
     setState(()  {
+
+      // con getStringList gli dico quale deve essere in questo caso la lista di riferimento ossia _preferiti
       _preferiti = ss.getStringList('preferiti') ?? [];
     });
 
   }
 
-  // creo una funzione che aggiorna il valore della lista _preferiti
-  void addOneFavoriteToPreferiti(String id) async {
+  // creo una funzione che remove o aggiunge
+  void toggleOneFavoriteToPreferiti(String id) async {
     setState(() {
-      _preferiti.add(id);
+      if(_preferiti.contains(id)) {
+        _preferiti.remove(id);
+      } else {
+        _preferiti.add(id);
+      }
     });
 
     // ho bisogno di inizializzare nuovamente
     SharedPreferences ss = await SharedPreferences.getInstance();
+
+    // con setStringList  chiave preferiti vammi a salvare la lista che ti passo come parametro
     ss.setStringList('preferiti', _preferiti);
   }
 
@@ -77,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             trailing: IconButton(
               icon: _preferiti.contains(Pizza.listaPizze[index].id) ? const Icon(Icons.favorite, color: Colors.red,) :
               const Icon(Icons.favorite_border_outlined),
-              onPressed: () => addOneFavoriteToPreferiti(Pizza.listaPizze[index].id),
+              onPressed: () => toggleOneFavoriteToPreferiti(Pizza.listaPizze[index].id),
             ),
           );
         },
