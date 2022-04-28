@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_app/components/add_favorite_button.dart';
 import 'package:travel_app/components/custom_button.dart';
 import 'package:travel_app/components/picture_card.dart';
 import 'package:travel_app/models/meta_turistica.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailMeta extends StatelessWidget {
   final MetaTuristica meta;
@@ -53,9 +52,8 @@ class DetailMeta extends StatelessWidget {
               Positioned(
                   right: 24,
                   top: 32,
-                  child: CustomButton(
-                    icon: (Icons.bookmark_outlined),
-                    colore: Colors.grey.shade200,
+                  child: AddFavoriteButton(
+                    metaTuristica: meta,
                   )),
               Positioned(
                 top: 250,

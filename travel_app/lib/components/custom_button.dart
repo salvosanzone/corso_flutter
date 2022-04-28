@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButton extends StatefulWidget {
+
   final IconData icon;
   final Color colore;
   const CustomButton({Key? key, required this.icon, required this.colore}) : super(key: key);
+
+  @override
+  State<CustomButton> createState() => _CustomButtonState();
+}
+
+class _CustomButtonState extends State<CustomButton> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +25,13 @@ class CustomButton extends StatelessWidget {
           ),
         ],
         borderRadius: BorderRadiusDirectional.circular(8),
-        color: colore,
+        color: widget.colore,
       ),
       width: 50,
       height: 50,
       child: IconButton(
-        onPressed: () => Navigator.of(context).pop(),
-        icon: Icon(icon),
+        onPressed: () {},
+        icon: Icon(widget.icon),
       ),
     );
   }
