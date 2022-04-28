@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/components/custom_drawer.dart';
 import 'package:travel_app/components/custom_text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -60,8 +62,11 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 42),
                       child: Align(
                           child:  ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if(_formKey.currentState?.validate() ?? false) {
+                                SharedPreferences ss  = await SharedPreferences.getInstance();
+                                // salvo la relazione chiave/valore in ss
+                                ss.setBool('logKey', true);
                                 Navigator.of(context).popAndPushNamed('/home');
                               }
                             },

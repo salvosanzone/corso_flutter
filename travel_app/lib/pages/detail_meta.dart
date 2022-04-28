@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/components/custom_button.dart';
 import 'package:travel_app/components/picture_card.dart';
 import 'package:travel_app/models/meta_turistica.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailMeta extends StatelessWidget {
   final MetaTuristica meta;
