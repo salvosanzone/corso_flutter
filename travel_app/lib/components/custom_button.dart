@@ -30,7 +30,9 @@ class _CustomButtonState extends State<CustomButton> {
       width: 50,
       height: 50,
       child: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed('/home');
+        },
         icon: Icon(widget.icon),
       ),
     );
