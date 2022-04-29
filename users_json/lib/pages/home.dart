@@ -107,7 +107,6 @@ class _HomeState extends State<Home> {
                             children: [
                               CircleAvatar(
                                   radius: 36,
-                                  backgroundColor: Colors.transparent,
                                   backgroundImage: NetworkImage(listUsers[index].image)
                               ),
                               Column(
