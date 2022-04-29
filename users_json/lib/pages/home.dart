@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:users_json/api/api_users.dart';
 import 'package:users_json/models/users_response.dart';
@@ -99,10 +100,36 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
-                        child: ListTile(
-                          title: Text('First Name: ${listUsers[index].firstName}'),
-                          subtitle: Text('Last Name: ${listUsers[index].lastName}'),
-                          trailing: Text('Age: ${listUsers[index].age}'),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                  radius: 36,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: NetworkImage(listUsers[index].image)
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                      'First Name: ${listUsers[index].firstName}',
+                                      style: const TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                      'Last Name: ${listUsers[index].lastName}',
+                                      style: const TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                      'Age: ${listUsers[index].age}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ],
+
+                          ),
                         ),
                       );
                     });
