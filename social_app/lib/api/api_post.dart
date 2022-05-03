@@ -14,9 +14,12 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/post?page=$page&limit=$limit'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
+
+    print(response.body);
+
 
     // se va tutto bene stampo altrimenti stampo l'errore
     if(response.statusCode == 200) {
@@ -29,9 +32,12 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/post/$id'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
+    print(response.body);
+
+
 
     if(response.statusCode == 200) {
       return Post.fromJson(jsonDecode(response.body));
@@ -43,7 +49,7 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/post/$id/post'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
 

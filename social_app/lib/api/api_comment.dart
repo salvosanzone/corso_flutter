@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:http/http.dart' as http;
 import 'package:social_app/models/comment.dart';
 import 'package:social_app/models/comment_response.dart';
 
 
-class ApiPost {
+class ApiComment {
 
   static String get baseUrl => 'https://dummyapi.io/data/v1';
 
@@ -15,7 +14,7 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/comment?page=$page&limit=$limit'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
 
@@ -30,7 +29,7 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/post/$id/comment'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
 
@@ -44,7 +43,7 @@ class ApiPost {
     final response = await http.get(
         Uri.parse('$baseUrl/user/$id/comment'),
         headers: {
-          'app-id' : '626fb4964f880848738786a4'
+          'app-id' : '626fc963e000f68286f05f20'
         }
     );
 

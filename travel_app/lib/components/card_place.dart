@@ -67,6 +67,6 @@ class CardPlace extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

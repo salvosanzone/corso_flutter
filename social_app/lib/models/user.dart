@@ -9,10 +9,10 @@ part'user.g.dart';
 class User {
   final String? id;
   final String? title;
-  final String firstName;
-  final String lastName;
+  final String? firstName;
+  final String? lastName;
   final String? gender;
-  final String email;
+  final String? email;
   final String? dateOfBirth;
   final String? registerDate;
   final String? phone;
@@ -20,11 +20,11 @@ class User {
   final Location? location;
 
   const User({
-    required this.firstName,
-    required this.lastName,
+    this.firstName,
+    this.lastName,
     this.phone,
     this.gender,
-    required this.email,
+    this.email,
     this.id,
     this.title,
     this.dateOfBirth,
