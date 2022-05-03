@@ -30,20 +30,20 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               const Positioned(
-                left: 155,
+                left: 140,
                 top: 50,
                 child: CircleAvatar(
-                  radius: 60,
+                  radius: 70,
                   backgroundImage: NetworkImage(
                       'https://user.rmartonline.com/app-assets/images/pages/login.png'),
                   backgroundColor: Colors.transparent,
                 ),
               ),
               const Positioned(
-                  bottom: 20,
+                  bottom: 10,
                   right: 10,
                   child:
-                      Text('SanzApp', style: TextStyle(color: Colors.white))),
+                      Text('SanzApp', style: TextStyle(color: Colors.white, fontSize: 16))),
             ],
           ),
           const SizedBox(
