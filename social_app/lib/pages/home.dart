@@ -63,7 +63,23 @@ class _HomeState extends State<Home> {
                       child: Text(
                           'SanzApp', style: TextStyle(color: Colors.white, fontSize: 24),
                       )
-                  )
+                  ),
+                  Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            '/profile',
+
+                            // passo al click alla pagina del profilo l'id
+                            arguments: {}
+                          );
+
+                        },
+                        icon: const Icon(Icons.person, color: Colors.white,),
+                      )
+                  ),
                 ],
               ),
               const SizedBox(height: 20,),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/models/post.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
 
@@ -12,6 +13,14 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if(post.publishDate != null) {
+      // trasformo da stringa a DateTime
+      final _data = DateTime.parse(post.publishDate!);
+      print(
+        // trasformo da DateTime a stringa nel formato che preferisco
+          DateFormat('d/M/y HH:mm').format(_data));
+    }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: GestureDetector(
@@ -82,42 +91,40 @@ class PostCard extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Expanded(
-                    child: Stack(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 3 / 2,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black54,
-                                  blurRadius: 4,
-                                  offset: Offset(4, 4), // Shadow position
-                                ),
-                              ],
-                              image: DecorationImage(
-                                opacity: 0.9,
-                                image: NetworkImage(post.image),
-                                fit: BoxFit.cover,
+                  child: Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 3 / 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 4,
+                                offset: Offset(4, 4), // Shadow position
                               ),
-                              borderRadius: BorderRadius.circular(16),
+                            ],
+                            image: DecorationImage(
+                              opacity: 0.9,
+                              image: NetworkImage(post.image),
+                              fit: BoxFit.cover,
                             ),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        AspectRatio(
-                          aspectRatio: 3 / 2,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                      ),
+                      AspectRatio(
+                        aspectRatio: 3 / 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20,),
@@ -125,29 +132,23 @@ class PostCard extends StatelessWidget {
                     "'${post.text}'", style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 10,),
+
+                // posso usare questo if ma senza le graffe
+                if(post.tags != null)
                 Wrap(
                   spacing: 6,
-                  children: [
-                    Chip(
+                  children: post.tags.map((tag) => Chip(
                       elevation: 8,
-                      padding: const EdgeInsets.all(8),
                       backgroundColor: Colors.yellow.shade700,
-                      shadowColor: Colors.black,
-                        label: const Text(
-                          '#animal', style: TextStyle(color: Colors.white),
-                        ),
-                    ),Chip(
-                      elevation: 8,
                       padding: const EdgeInsets.all(8),
-                      backgroundColor: Colors.yellow.shade700,
                       shadowColor: Colors.black,
-                        label: const Text(
-                          '#dog', style: TextStyle(color: Colors.white),
-                        ),
-                    ),
-                  ],
+                      label: Text(
+                        '#${tag}', style: const TextStyle(color: Colors.white),
+                      ))
+                  ).toList(),
                 ),
                 const SizedBox(height: 20,),
+
                 Row(
                   children: [
                     const Icon(Icons.favorite, color: Colors.red,),
@@ -155,7 +156,7 @@ class PostCard extends StatelessWidget {
                   ],
                 ),
 
-              ],
+                ],
             ),
           ),
         ),
@@ -163,3 +164,4 @@ class PostCard extends StatelessWidget {
     );
   }
 }
+

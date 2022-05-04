@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app/pages/check_loggated.dart';
 import 'package:social_app/pages/home.dart';
 import 'package:social_app/pages/login_page.dart';
+import 'package:social_app/pages/profile_page.dart';
 
 
 generateRoutes() {
@@ -9,5 +10,6 @@ generateRoutes() {
     '/': (context) => CheckLoggated(),
     '/home': (context) => Home(),
     '/login': (context) => LoginPage(),
+    '/profile': (context) => ProfilePage(),
   };
 }

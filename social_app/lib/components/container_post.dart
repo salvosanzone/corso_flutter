@@ -47,8 +47,8 @@ class _ContainerPostState extends State<ContainerPost> {
     _listOfPost = [];
     _hasMorePosts = false;
     _skipPosts = 0;
-    _future = _fetchPosts();
     _page = 0;
+    _future = _fetchPosts();
   }
 
   @override
