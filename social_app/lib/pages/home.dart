@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/api/api_post.dart';
+import 'package:social_app/components/container_post.dart';
 import 'package:social_app/components/post_card.dart';
+import 'package:social_app/models/post.dart';
+import 'package:social_app/models/post_response.dart';
+import 'package:social_app/models/user.dart';
 
-class Home extends StatelessWidget {
+
+
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +28,18 @@ class Home extends StatelessWidget {
               Stack(
                 children: [
                   Container(
-                    height: 80,
+                    height: 200,
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.shade400,
                           blurRadius: 4,
-                          offset: const Offset(4, 8), // Shadow position
+                          offset: const Offset(0, 8), // Shadow position
                         ),
                       ],
                       borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(32),
-                        topRight: Radius.circular(32),
+                        bottomLeft: Radius.circular(80),
+                        topRight: Radius.circular(80),
                       ),
                       image: const DecorationImage(
                           image: NetworkImage('https://www.wallpapertip.com/wmimgs/79-791851_sightings-free-orange-background-hd.png'),
@@ -34,7 +47,16 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
-
+                  Container(
+                    height: 200,
+                    decoration: const BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(80),
+                        topRight: Radius.circular(80),
+                      ),
+                    ),
+                  ),
                   const Positioned(
                       top: 10,
                       left: 10,
@@ -42,21 +64,11 @@ class Home extends StatelessWidget {
                           'SanzApp', style: TextStyle(color: Colors.white, fontSize: 24),
                       )
                   )
-
                 ],
               ),
-
               const SizedBox(height: 20,),
-
-              Expanded(
-                child: ListView(
-                  children: [
-                    PostCard(),
-                    PostCard(),
-                    PostCard(),
-                    PostCard(),
-                  ],
-                ),
+              const Expanded(
+                child: ContainerPost(),
               ),
             ],
           ),
