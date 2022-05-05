@@ -6,7 +6,9 @@ import 'package:social_app/models/post_response.dart';
 import 'package:social_app/api/api_post.dart';
 
 class ContainerPost extends StatefulWidget {
-  const ContainerPost({Key? key}) : super(key: key);
+
+  final String? userId;
+  const ContainerPost({this.userId, Key? key}) : super(key: key);
 
   @override
   _ContainerPostState createState() => _ContainerPostState();
@@ -29,7 +31,14 @@ class _ContainerPostState extends State<ContainerPost> {
 
   // creo una funzione che andrà a recuperare gli users e ad aggiornare le variabili
   Future<List<Post>> _fetchPosts() async {
-    final PostResponse result = await ApiPost.getPostList(page: _page);
+    late final PostResponse result;
+
+    if(widget.userId != null) {
+      result = await ApiPost.getPostByUser(widget.userId!, page: _page);
+    }
+    else {
+      result = await ApiPost.getPostList(page: _page);
+    }
 
     setState(() {
       // setto le variabili

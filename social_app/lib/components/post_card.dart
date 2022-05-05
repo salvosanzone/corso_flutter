@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/models/post.dart';
 import 'package:intl/intl.dart';
+import 'package:social_app/pages/my_posts.dart';
+import 'package:social_app/pages/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class PostCard extends StatelessWidget {
-
   // creo una variabile di tipo Post
   final Post post;
 
@@ -13,12 +15,11 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    if(post.publishDate != null) {
+    if (post.publishDate != null) {
       // trasformo da stringa a DateTime
       final _data = DateTime.parse(post.publishDate!);
       print(
-        // trasformo da DateTime a stringa nel formato che preferisco
+          // trasformo da DateTime a stringa nel formato che preferisco
           DateFormat('d/M/y HH:mm').format(_data));
     }
     return Padding(
@@ -45,15 +46,24 @@ class PostCard extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          CircleAvatar(
-                            radius: 36,
-                            backgroundImage: NetworkImage(
-                                post.owner.picture ?? "https://via.placeholder.com/150"
+                          // al click del profilo gli passo l'id personale come parametro
+                           GestureDetector(
+                            onTap: () {
+                              print('cliccato');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfilePage(giveMeId: post.owner.id!),
+                                ),
+                              );
+                            },
+                            child: CircleAvatar(
+                              radius: 36,
+                              backgroundImage: NetworkImage(
+                                  post.owner.picture ??
+                                      "https://via.placeholder.com/150"),
                             ),
-                          ),
-                          const CircleAvatar(
-                            radius: 36,
-                            backgroundColor: Colors.black12,
                           ),
                         ],
                       ),
@@ -61,18 +71,24 @@ class PostCard extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Text(
-                                  post.owner.firstName?? '',
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Text(
-                                  post.owner.lastName?? '',
-                                  style: const TextStyle(fontSize: 20),
+                              GestureDetector(
+                                onTap: () async {
+                                  //print('click');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return MyPosts(giveMeId: post.owner.id!,);
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text(
+                                    '${post.owner.firstName} ${post.owner.lastName }',
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
                                 ),
                               ),
                             ],
@@ -80,7 +96,7 @@ class PostCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
-                              post.publishDate?? '',
+                              post.publishDate ?? '',
                               style: const TextStyle(fontSize: 10),
                             ),
                           ),
@@ -127,36 +143,47 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20,),
-                Text(
-                    "'${post.text}'", style: const TextStyle(fontSize: 16),
+                const SizedBox(
+                  height: 20,
                 ),
-                const SizedBox(height: 10,),
+                Text(
+                  "'${post.text}'",
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
 
                 // posso usare questo if ma senza le graffe
-                if(post.tags != null)
-                Wrap(
-                  spacing: 6,
-                  children: post.tags.map((tag) => Chip(
-                      elevation: 8,
-                      backgroundColor: Colors.yellow.shade700,
-                      padding: const EdgeInsets.all(8),
-                      shadowColor: Colors.black,
-                      label: Text(
-                        '#${tag}', style: const TextStyle(color: Colors.white),
-                      ))
-                  ).toList(),
+                if (post.tags != null)
+                  Wrap(
+                    spacing: 6,
+                    children: post.tags
+                        .map((tag) => Chip(
+                            elevation: 8,
+                            backgroundColor: Colors.yellow.shade700,
+                            padding: const EdgeInsets.all(8),
+                            shadowColor: Colors.black,
+                            label: Text(
+                              '#${tag}',
+                              style: const TextStyle(color: Colors.white),
+                            )))
+                        .toList(),
+                  ),
+                const SizedBox(
+                  height: 20,
                 ),
-                const SizedBox(height: 20,),
 
                 Row(
                   children: [
-                    const Icon(Icons.favorite, color: Colors.red,),
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
                     Text(' ${post.likes}')
                   ],
                 ),
-
-                ],
+              ],
             ),
           ),
         ),
@@ -164,4 +191,3 @@ class PostCard extends StatelessWidget {
     );
   }
 }
-

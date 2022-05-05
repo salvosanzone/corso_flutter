@@ -10,6 +10,5 @@ generateRoutes() {
     '/': (context) => CheckLoggated(),
     '/home': (context) => Home(),
     '/login': (context) => LoginPage(),
-    '/profile': (context) => ProfilePage(),
   };
 }

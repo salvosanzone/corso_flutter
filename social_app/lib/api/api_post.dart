@@ -18,7 +18,7 @@ class ApiPost {
         }
     );
 
-    print(response.body);
+    //print(response.body);
 
 
     // se va tutto bene stampo altrimenti stampo l'errore
@@ -35,7 +35,7 @@ class ApiPost {
           'app-id' : '626fc963e000f68286f05f20'
         }
     );
-    print(response.body);
+    //print(response.body);
 
 
 
@@ -45,16 +45,16 @@ class ApiPost {
     throw Exception('Errore in ricevere i dettagli dell utente ${response.body}');
   }
 
-  static Future<Post> getPostByUser(String id) async {
+  static Future<PostResponse> getPostByUser(String id,{int page = 0, int limit = 20}) async {
     final response = await http.get(
-        Uri.parse('$baseUrl/post/$id/post'),
+        Uri.parse('$baseUrl/user/$id/post?page=$page&limit=$limit'),
         headers: {
           'app-id' : '626fc963e000f68286f05f20'
         }
     );
 
     if(response.statusCode == 200) {
-      return Post.fromJson(jsonDecode(response.body));
+      return PostResponse.fromJson(jsonDecode(response.body));
     }
     throw Exception('Errore in ricevere i dettagli dell utente ${response.body}');
   }

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/api/api_post.dart';
 import 'package:social_app/components/container_post.dart';
-import 'package:social_app/components/post_card.dart';
-import 'package:social_app/models/post.dart';
-import 'package:social_app/models/post_response.dart';
-import 'package:social_app/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_app/pages/profile_page.dart';
 
 
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final bool active;
+  final String? userId;
+  const Home({this.active = true, this.userId, Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,10 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+
               Stack(
                 children: [
-                  Container(
+                  widget.active ? Container(
                     height: 200,
                     decoration: BoxDecoration(
                       boxShadow: [
@@ -46,34 +47,31 @@ class _HomeState extends State<Home> {
                           fit: BoxFit.cover
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 200,
-                    decoration: const BoxDecoration(
-                      color: Colors.white12,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(80),
-                        topRight: Radius.circular(80),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
+                  ) : Text(''),
+                  Positioned(
                       top: 10,
                       left: 10,
-                      child: Text(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pushNamed('/login'),
+                        child: const Text(
                           'SanzApp', style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
                       )
                   ),
                   Positioned(
                       bottom: 10,
                       right: 10,
                       child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(
-                            '/profile',
 
-                            // passo al click alla pagina del profilo l'id
-                            arguments: {}
+                        // al click salvo passso alla pagina del profilo, l'id salvato in SP con la chiave di idKey
+                        onPressed: () async {
+                          SharedPreferences ss = await SharedPreferences.getInstance();
+                          var _idProfileClicked = ss.getString('idKey');
+
+                          Navigator.push(
+                            context, MaterialPageRoute(
+                            builder: (context) => ProfilePage(giveMeId: _idProfileClicked!),
+                          ),
                           );
 
                         },
@@ -82,9 +80,10 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20,),
-              const Expanded(
-                child: ContainerPost(),
+              Expanded(
+                child: ContainerPost(userId: widget.userId,),
               ),
             ],
           ),
