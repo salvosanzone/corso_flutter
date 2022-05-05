@@ -25,10 +25,10 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-
+              if(widget.active)
               Stack(
                 children: [
-                  widget.active ? Container(
+                  Container(
                     height: 200,
                     decoration: BoxDecoration(
                       boxShadow: [
@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
                           fit: BoxFit.cover
                       ),
                     ),
-                  ) : Text(''),
+                  ),
                   Positioned(
                       top: 10,
                       left: 10,

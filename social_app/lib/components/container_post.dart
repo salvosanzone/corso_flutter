@@ -89,6 +89,9 @@ class _ContainerPostState extends State<ContainerPost> {
                       );
                     }
                     // restituisco la lista di post
+
+                    /*ho creato questa variabile perche il FutureBilder lo faccio qui
+                    ma il widget PostCard è da un'altra parte*/
                     return PostCard(post: listPost[index]);
                   });
             }

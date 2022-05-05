@@ -25,16 +25,16 @@ class ApiComment {
     throw Exception('Errore in ricevere gli utenti ${response.body}');
   }
 
-  static Future<Comment> getCommentsByPost(String id) async {
+  static Future<CommentResponse> getCommentsByPost(String id, {int page = 0, int limit = 20}) async {
     final response = await http.get(
-        Uri.parse('$baseUrl/post/$id/comment'),
+        Uri.parse('$baseUrl/post/$id/comment?page=$page&limit=$limit'),
         headers: {
           'app-id' : '626fc963e000f68286f05f20'
         }
     );
 
     if(response.statusCode == 200) {
-      return Comment.fromJson(jsonDecode(response.body));
+      return CommentResponse.fromJson(jsonDecode(response.body));
     }
     throw Exception('Errore in ricevere i dettagli dell utente ${response.body}');
   }

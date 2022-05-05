@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/models/post.dart';
 import 'package:intl/intl.dart';
+import 'package:social_app/pages/comments_page.dart';
 import 'package:social_app/pages/my_posts.dart';
 import 'package:social_app/pages/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -175,12 +176,30 @@ class PostCard extends StatelessWidget {
                 ),
 
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        ),
+                        Text(' ${post.likes}'),
+                      ],
                     ),
-                    Text(' ${post.likes}')
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) {
+                              return CommentsPage(giveMeIdPost: post.id!);
+                            }
+                        ),
+                        );
+                      },
+                      child: const Text('Commenti'),
+                    ),
                   ],
                 ),
               ],
