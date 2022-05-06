@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        //scaffoldBackgroundColor: Colors.grey.shade200,
+        primarySwatch: Colors.orange,
         textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
       ),
       initialRoute: '/',

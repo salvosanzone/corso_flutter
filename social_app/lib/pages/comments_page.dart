@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/api/api_comment.dart';
 import 'package:social_app/models/comment_response.dart';
 import 'package:social_app/models/comment.dart';
@@ -9,6 +10,7 @@ class CommentsPage extends StatefulWidget {
 
   // creo una variabile che conterrà l'id del post
   final String giveMeIdPost;
+
 
   // creo una variabile di tipo Comment
 
@@ -26,9 +28,29 @@ class _CommentsPageState extends State<CommentsPage> {
   late Future<List<Comment>> _future;
   late int _page;
 
+  late TextEditingController _textEditingController;
+  String? _message;
+  late String? _idUtente;
+  late String _idPost;
+  late UniqueKey _key;
+
+  Future<void> _initUtente() async {
+    SharedPreferences ss = await SharedPreferences.getInstance();
+    _idUtente = ss.getString('idKey');
+
+    if(_idUtente == null) {
+      throw Exception('utente non laggato');
+
+    }
+  }
+
   @override
   void initState() {
     inizializeVariables();
+    _key = UniqueKey();
+    _initUtente();
+    _textEditingController = TextEditingController();
+    _idPost = widget.giveMeIdPost;
     super.initState();
   }
 
@@ -37,6 +59,7 @@ class _CommentsPageState extends State<CommentsPage> {
     // chiamata effettiva che noi facciamo ad internet ed è dentro result, il risultato della chiamata
     final result = await ApiComment.getCommentsByPost(widget.giveMeIdPost, page: _page);
 
+    print('risultato: $result');
 
     setState(() {
       _skipComments = _skipComments + result.limit;
@@ -62,6 +85,7 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('MyComments'),
@@ -79,6 +103,9 @@ class _CommentsPageState extends State<CommentsPage> {
           if (snapshot.hasData) {
 
             var comment = snapshot.data;
+
+
+            //print('commenti: $comment');
 
             // questa funzione restituisce la lista dei post
             return ListView.builder(
@@ -108,95 +135,41 @@ class _CommentsPageState extends State<CommentsPage> {
                     ),
                     shadowColor: Colors.black,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Stack(
-                                  children: [
-                                    // al click del profilo gli passo l'id personale come parametro
-                                    CircleAvatar(
-                                      radius: 36,
-                                      backgroundImage: NetworkImage(
-                                        comment?[index].owner.picture ?? '',
-                                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 36,
+                                backgroundImage: NetworkImage(
+                                  comment?[index].owner.picture ?? '',
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 4.0),
-                                          child: Text(
-                                            '${comment?[index].owner.firstName} ${comment?[index].owner.lastName}' ?? '',
-                                            style: const TextStyle(fontSize: 20),
-                                          ),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(
+                                          '${comment?[index].owner.firstName} ${comment?[index].owner.lastName}',
+                                          style: const TextStyle(fontSize: 20),
                                         ),
-                                      ],
-                                    ),
-
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Stack(
-                              children: [
-                                /*AspectRatio(
-                                  aspectRatio: 3 / 2,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black54,
-                                          blurRadius: 4,
-                                          offset: Offset(4, 4), // Shadow position
-                                        ),
-                                      ],
-                                      image: DecorationImage(
-                                        opacity: 0.9,
-                                        image: NetworkImage(comment?[index].post ?? ''),
-                                        fit: BoxFit.cover,
                                       ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
+                                    ],
                                   ),
-                                ),*/
-                                /*AspectRatio(
-                                  aspectRatio: 3 / 2,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                ),*/
-                              ],
+                                ],
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 32.0),
+                            child: Text(
+                                comment?[index].message ?? '',
+                              style: const TextStyle(fontSize: 16),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                              comment?[index].message ?? '',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          // posso usare questo if ma senza le graffe
-                          const SizedBox(
-                            height: 20,
                           ),
                         ],
                       ),
@@ -217,6 +190,69 @@ class _CommentsPageState extends State<CommentsPage> {
           );
 
         }),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () async {
+          var popResult = await showModalBottomSheet(
+              context: context,
+              isScrollControlled : true,
+              builder: (context) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    top: 8, left: 8, right: 8, bottom: MediaQuery.of(context).viewInsets.bottom
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: _textEditingController,
+                        maxLines: 5,
+                        onChanged: (value) {
+                          _message = _textEditingController.text;
+                        },
+                      ),
+                      Row(
+                        children: [
+                          TextButton(
+                            child: const Text('Annulla'),
+                            onPressed: () {
+                              _message = null;
+                              _textEditingController.clear();
+                              Navigator.of(context).pop();
+                            }
+                          ),
+                          TextButton(
+                            child: const Text('Pubblica'),
+                            onPressed: () async {
+                              if(_message == null || _message!.isEmpty) {
+                                Navigator.of(context).pop();
+                              }
+                              final response = ApiComment.addComment(_idPost, _message!);
+                              print('risposta $response');
+                              _message = null;
+                              _textEditingController.clear();
+
+                              Navigator.of(context).pop(true);
+
+
+                            },
+                          ),
+
+                        ],
+                      ),
+
+                    ],
+                  ),
+                );
+              }
+          );
+          if(popResult == true) {
+            setState(() {
+              _key = UniqueKey();
+            });
+          }
+        },
+      ),
     );
   }
 }
