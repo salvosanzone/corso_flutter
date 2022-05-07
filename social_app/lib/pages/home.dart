@@ -23,15 +23,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final navigationKey = GlobalKey<CurvedNavigationBarState>();
   // creo una variabile che conterrà l'id
-  late String? _idUser;
   late Post _post;
   late String _text;
   late String _tag;
   late TextEditingController _textEditingControllerText;
   late TextEditingController _textEditingControllerTag;
-  late User _user;
+  int _currentIndex = 0;
 
-  int _currentIndex = 1;
 
 
 
@@ -215,21 +213,44 @@ class _HomeState extends State<Home> {
             }
           );
         }
-    )
-    );
-  }
-}
+    ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
 
-
-/*bottomNavigationBar: CurvedNavigationBar(
-        key: navigationKey,
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            this._currentIndex = index;
-            print(index);
+            _currentIndex = index;
           });
         },
+        backgroundColor: Colors.orange,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: Colors.white,
+            label: 'HOME',
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+              },
+              icon: Icon(Icons.home,),
+            )
+          ),
+          BottomNavigationBarItem(
+              backgroundColor: Colors.white,
+              label: 'PROFILE',
+            icon: IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {},
+              icon: Icon(Icons.person,),
+            )
+          ),
+        ],
+      ),
+      /*bottomNavigationBar: CurvedNavigationBar(
+        key: navigationKey,
         backgroundColor: Colors.transparent,
         height: 60,
         color: Colors.orange.shade500,
@@ -245,4 +266,13 @@ class _HomeState extends State<Home> {
           const Icon(Icons.home, color: Colors.white,),
           //const Icon(Icons.person, color: Colors.white,),
         ],
-      ),*/
+      ),
+*/
+
+
+    );
+  }
+}
+
+
+
