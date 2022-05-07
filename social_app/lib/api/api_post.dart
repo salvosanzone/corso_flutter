@@ -67,6 +67,17 @@ class ApiPost {
   static Future<Post> addPost(Post post) async {
     Map<String,dynamic> _newPost = post.toJson();
     _newPost.removeWhere((key, value) => value == null);
+    SharedPreferences ss  = await SharedPreferences.getInstance();
+    final _idUser = ss.getString('idKey');
+    if(_idUser == null) {
+      throw Exception('Non sei loggato');
+    } else {
+      _newPost['owner'] = _idUser ;
+
+    }
+
+
+
 
     final http.Response response = await http.post(
         Uri.parse('$baseUrl/post/create'),
@@ -74,7 +85,7 @@ class ApiPost {
           'app-id': '626fc963e000f68286f05f20',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode({_newPost})
+        body: jsonEncode(_newPost)
     );
 
     if(response.statusCode == 200){

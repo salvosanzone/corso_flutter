@@ -32,7 +32,6 @@ class _CommentsPageState extends State<CommentsPage> {
   String? _message;
   late String? _idUtente;
   late String _idPost;
-  late UniqueKey _key;
 
   Future<void> _initUtente() async {
     SharedPreferences ss = await SharedPreferences.getInstance();
@@ -47,7 +46,6 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   void initState() {
     inizializeVariables();
-    _key = UniqueKey();
     _initUtente();
     _textEditingController = TextEditingController();
     _idPost = widget.giveMeIdPost;
@@ -63,7 +61,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
     setState(() {
       _skipComments = _skipComments + result.limit;
-      _hasMoreComments = (result.total - _skipComments > 0);
+      _hasMoreComments = (result.total - _skipComments) > 0;
       _listOfComments = _listOfComments + result.data;
       _page++;
     });
@@ -85,10 +83,11 @@ class _CommentsPageState extends State<CommentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('MyComments'),
+        title: const Text(
+            'MyComments', style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.orange,
         leading: IconButton(
           onPressed: () => Navigator.of(context).pushNamed('/home'),
@@ -177,21 +176,19 @@ class _CommentsPageState extends State<CommentsPage> {
                   ),
                 );
               },
-
             );
           }
-
           if(snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
-
           return const Center(
             child: CircularProgressIndicator(),
           );
 
         }),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        elevation: 10,
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () async {
           var popResult = await showModalBottomSheet(
               context: context,
@@ -227,20 +224,17 @@ class _CommentsPageState extends State<CommentsPage> {
                               if(_message == null || _message!.isEmpty) {
                                 Navigator.of(context).pop();
                               }
-                              final response = ApiComment.addComment(_idPost, _message!);
+                              final response = await ApiComment.addComment(_idPost, _message!);
                               print('risposta $response');
                               _message = null;
                               _textEditingController.clear();
 
                               Navigator.of(context).pop(true);
-
-
                             },
                           ),
 
                         ],
                       ),
-
                     ],
                   ),
                 );
@@ -248,7 +242,7 @@ class _CommentsPageState extends State<CommentsPage> {
           );
           if(popResult == true) {
             setState(() {
-              _key = UniqueKey();
+              inizializeVariables();
             });
           }
         },

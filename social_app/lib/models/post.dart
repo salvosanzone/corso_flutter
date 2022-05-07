@@ -10,7 +10,7 @@ class Post {
   final String? id;
   final String text;
   final String image;
-  final int likes;
+  final int? likes;
   final List<String> tags;
   final String? publishDate;
   final User owner;
@@ -20,7 +20,7 @@ class Post {
     this.id,
     required this.image,
     required this.text,
-    required this.likes,
+    this.likes,
     this.publishDate,
     required this.tags
 });

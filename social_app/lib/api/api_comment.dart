@@ -73,7 +73,7 @@ class ApiComment {
         body: jsonEncode({
           'owner': userId,
           'post': postId,
-          'messsage': message,
+          'message': message,
 
         })
     );
