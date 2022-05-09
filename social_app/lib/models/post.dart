@@ -8,21 +8,21 @@ part 'post.g.dart';
 )
 class Post {
   final String? id;
-  final String text;
-  final String image;
+  final String? text;
+  final String? image;
   final int? likes;
-  final List<String> tags;
+  final List<String>? tags;
   final String? publishDate;
   final User owner;
 
   const Post({
     required this.owner,
     this.id,
-    required this.image,
-    required this.text,
+    this.image,
+    this.text,
     this.likes,
     this.publishDate,
-    required this.tags
+    this.tags
 });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);

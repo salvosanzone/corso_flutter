@@ -102,13 +102,13 @@ class ApiPost {
     Map<String,dynamic> _newPost = post.toJson();
     _newPost.removeWhere((key, value) => value == null);
 
-    final http.Response response = await http.post(
+    final http.Response response = await http.put(
         Uri.parse('$baseUrl/post/$id'),
         headers: {
           'app-id': '626fc963e000f68286f05f20',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode({_newPost})
+        body: jsonEncode(_newPost)
     );
 
     if(response.statusCode == 200){

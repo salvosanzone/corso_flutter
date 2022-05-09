@@ -13,10 +13,8 @@ class EditPostBtn extends StatefulWidget {
 
 class _EditPostBtnState extends State<EditPostBtn> {
 
-  late String _text;
 
   late Post _post = widget.post;
-  late String _tag;
   late TextEditingController _textEditingControllerText;
   late TextEditingController _textEditingControllerTag;
 
@@ -24,8 +22,8 @@ class _EditPostBtnState extends State<EditPostBtn> {
   void initState() {
 
       _textEditingControllerText = TextEditingController(text: _post.text);
-      //_tag = _post.tags?.join(', ') ?? '';
-      //_textEditingControllerTag = TextEditingController(text: _tag);
+      String? _tag = _post?.tags?.join(', ');
+      _textEditingControllerTag = TextEditingController(text: _tag);
 
     super.initState();
   }
@@ -38,17 +36,14 @@ class _EditPostBtnState extends State<EditPostBtn> {
             context: context,
             builder: (context) {
               return Padding(
-                padding: const EdgeInsets.only(
-                    top: 0, left: 16, right: 16, bottom: 0
+                padding: EdgeInsets.only(
+                    top: 8, left: 8, right: 8, bottom: MediaQuery.of(context).viewInsets.bottom
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: _textEditingControllerText,
-                      onChanged: (value) {
-                        _text = _textEditingControllerText.text;
-                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(24.0),
@@ -66,7 +61,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
                             ],
                             image: const DecorationImage(
                               opacity: 0.9,
-                              image: NetworkImage('http://www.blackelk.it/wp-content/uploads/2017/07/animali-selvatici-nelle-citt%C3%A0-BIG.jpg'),
+                              image: NetworkImage(''),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -75,7 +70,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
                       ),
                     ),
                     TextField(
-                      //controller: _textEditingControllerTag,
+                      controller: _textEditingControllerTag,
                     ),
                     Row(
                       children: [
@@ -83,8 +78,6 @@ class _EditPostBtnState extends State<EditPostBtn> {
                         TextButton(
                           child: const Text('Annulla'),
                           onPressed: () {
-                              _textEditingControllerText.text = _post.text ?? '';
-                              //_textEditingControllerTag.text = _post!.tags.toList() ?? '';
                             Navigator.of(context).pop();
                           },
                         ),
@@ -97,15 +90,15 @@ class _EditPostBtnState extends State<EditPostBtn> {
                               );
                               _post = Post(
                                 image: 'http://www.blackelk.it/wp-content/uploads/2017/07/animali-selvatici-nelle-citt%C3%A0-BIG.jpg',
-                                text: _text,
-                                tags: _tag.split(', '),
+                                text: _textEditingControllerText.text,
+                                tags: _textEditingControllerTag.text.split(', '),
                                 owner: _userOne,
                               );
                               if(_post == null) {
                                 Navigator.of(context).pop();
                               }
                                else {
-                                await ApiPost.editPost(_post, _post.id!);
+                                await ApiPost.editPost(_post, widget.post.id!);
                               }
                               Navigator.of(context).pop(true);
                             }

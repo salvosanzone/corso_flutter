@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/components/like_button.dart';
 import 'package:social_app/models/post.dart';
 import 'package:intl/intl.dart';
+import 'package:social_app/models/user.dart';
 import 'package:social_app/pages/comments_page.dart';
 import 'package:social_app/pages/my_posts.dart';
 import 'package:social_app/pages/profile_page.dart';
@@ -8,18 +10,39 @@ import 'package:social_app/components/edit_post_btn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   // creo una variabile di tipo Post
   final Post post;
-
+  final User? user;
   // gli passo la classe Post e lo salvo in una variabile
-  const PostCard({required this.post, Key? key}) : super(key: key);
+  const PostCard({this.user, required this.post, Key? key}) : super(key: key);
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  String? _userId;
+
+  // salvo all'interno di _userId, l'id dell'utente loggato
+  Future<void> _initIdUser() async {
+    SharedPreferences ss = await SharedPreferences.getInstance();
+    setState(() {
+      _userId = ss.getString('idKey');
+    });
+
+  }
+
+  @override
+  void initState() {
+    _initIdUser();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    if (post.publishDate != null) {
+    if (widget.post.publishDate != null) {
       // trasformo da stringa a DateTime
-      final _data = DateTime.parse(post.publishDate!);
+      final _data = DateTime.parse(widget.post.publishDate!);
       print(
           // trasformo da DateTime a stringa nel formato che preferisco
           DateFormat('d/M/y HH:mm').format(_data));
@@ -49,6 +72,7 @@ class PostCard extends StatelessWidget {
                       Stack(
                         children: [
                           // al click del profilo gli passo l'id personale come parametro
+                          if(widget.post.owner.id != null)
                            GestureDetector(
                             onTap: () {
                               print('cliccato');
@@ -56,14 +80,14 @@ class PostCard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ProfilePage(giveMeId: post.owner.id!),
+                                      ProfilePage(giveMeId: widget.post.owner.id!),
                                 ),
                               );
                             },
                             child: CircleAvatar(
                               radius: 36,
                               backgroundImage: NetworkImage(
-                                  post.owner.picture ??
+                                  widget.post.owner.picture ??
                                       "https://via.placeholder.com/150"),
                             ),
                           ),
@@ -80,7 +104,7 @@ class PostCard extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
-                                        return MyPosts(giveMeId: post.owner.id!,);
+                                        return MyPosts(giveMeId: widget.post.owner.id!,);
                                       },
                                     ),
                                   );
@@ -88,7 +112,7 @@ class PostCard extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
-                                    '${post.owner.firstName} ${post.owner.lastName }',
+                                    '${widget.post.owner.firstName} ${widget.post.owner.lastName }',
                                     style: const TextStyle(fontSize: 20),
                                   ),
                                 ),
@@ -98,7 +122,7 @@ class PostCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
-                              post.publishDate ?? '',
+                              widget.post.publishDate ?? '',
                               style: const TextStyle(fontSize: 10),
                             ),
                           ),
@@ -111,6 +135,7 @@ class PostCard extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Stack(
                     children: [
+                      if(widget.post.image != null)
                       AspectRatio(
                         aspectRatio: 3 / 2,
                         child: Container(
@@ -125,7 +150,7 @@ class PostCard extends StatelessWidget {
                             ],
                             image: DecorationImage(
                               opacity: 0.9,
-                              image: NetworkImage(post.image),
+                              image: NetworkImage(widget.post.image!),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -149,7 +174,7 @@ class PostCard extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "'${post.text}'",
+                  "'${widget.post.text}'",
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(
@@ -157,10 +182,10 @@ class PostCard extends StatelessWidget {
                 ),
 
                 // posso usare questo if ma senza le graffe
-                if (post.tags != null)
+                  if(widget.post.tags != null)
                   Wrap(
                     spacing: 6,
-                    children: post.tags
+                    children: widget.post.tags!
                         .map((tag) => Chip(
                             elevation: 8,
                             backgroundColor: Colors.yellow.shade700,
@@ -181,11 +206,8 @@ class PostCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        Text(' ${post.likes}'),
+                        LikeButton(widget.post, _userId!),
+                        Text(' ${widget.post.likes}'),
                       ],
                     ),
 
@@ -194,14 +216,15 @@ class PostCard extends StatelessWidget {
                         Navigator.push(
                           context, MaterialPageRoute(
                             builder: (context) {
-                              return CommentsPage(giveMeIdPost: post.id!);
+                              return CommentsPage(giveMeIdPost: widget.post.id!);
                             }
                         ),
                         );
                       },
                       child: const Text('Commenti'),
                     ),
-                    EditPostBtn(post: post,),
+                    //if(user?.id == '60d0fe4f5311236168a109ca')
+                    EditPostBtn(post: widget.post,),
                   ],
                 ),
               ],
