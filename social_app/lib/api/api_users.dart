@@ -75,25 +75,25 @@ class ApiUser {
 
 
   // chiamate PUT, gli passo il model Post
- /* static Future<Post> editPost(Post post, String id) async {
-    Map<String,dynamic> _newPost = post.toJson();
-    _newPost.removeWhere((key, value) => value == null);
+  static Future<User> editUser(User post, String id) async {
+    Map<String,dynamic> _newUser = post.toJson();
+    _newUser.removeWhere((key, value) => value == null);
 
-    final http.Response response = await http.post(
-        Uri.parse('$baseUrl/post/$id'),
+    final http.Response response = await http.put(
+        Uri.parse('$baseUrl/user/$id'),
         headers: {
           'app-id': '626fc963e000f68286f05f20',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode({_newPost})
+        body: jsonEncode(_newUser)
     );
 
     if(response.statusCode == 200){
-      return Post.fromJson(jsonDecode(response.body));
+      return User.fromJson(jsonDecode(response.body));
     }
 
     throw Exception('Modifica post non riuscita: ${response.body}');
-  }*/
+  }
 
 
 

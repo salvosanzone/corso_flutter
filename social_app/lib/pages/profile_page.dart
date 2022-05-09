@@ -130,9 +130,19 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             const Icon(Icons.phone, size: 24, color: Colors.orangeAccent,),
-                              Text(
-                              user!.phone ?? '',
-                              style: const TextStyle(fontSize: 16),
+                              TextButton(
+                                onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (context) => const AlertDialog(
+                                      title: Text('alert'),
+                                      actions: [TextField(
+
+                                      )],
+                                    ),
+                                ),
+                                child: Text(
+                                    user!.phone ?? '', style: const TextStyle(fontSize: 16)
+                                ),
                             ),
                           ],
                         ),

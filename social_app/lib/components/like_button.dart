@@ -44,7 +44,7 @@ class _LikeButtonState extends State<LikeButton> {
         Post(
             id: widget.post.id,
             likes: _countLike,
-            owner: User()),
+            owner: const User()),
         widget.userIdLoggated);
 
     setState(() {

@@ -22,7 +22,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
   void initState() {
 
       _textEditingControllerText = TextEditingController(text: _post.text);
-      String? _tag = _post?.tags?.join(', ');
+      String? _tag = _post.tags?.join(', ');
       _textEditingControllerTag = TextEditingController(text: _tag);
 
     super.initState();

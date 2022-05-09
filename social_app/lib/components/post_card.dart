@@ -206,8 +206,8 @@ class _PostCardState extends State<PostCard> {
                   children: [
                     Row(
                       children: [
-                        LikeButton(widget.post, _userId!),
-                        Text(' ${widget.post.likes}'),
+                        if(widget.post.id != null) LikeButton(widget.post, widget.post.id!),
+
                       ],
                     ),
 
