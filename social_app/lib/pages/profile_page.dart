@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/api/api_users.dart';
+import 'package:social_app/components/custom_bottom_navigation_bar.dart';
 import 'package:social_app/models/user.dart';
 import 'package:social_app/models/location.dart';
 
@@ -170,6 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           }),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:social_app/pages/comments_page.dart';
 import 'package:social_app/pages/my_posts.dart';
 import 'package:social_app/pages/profile_page.dart';
+import 'package:social_app/components/edit_post_btn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -200,6 +201,7 @@ class PostCard extends StatelessWidget {
                       },
                       child: const Text('Commenti'),
                     ),
+                    EditPostBtn(post: post,),
                   ],
                 ),
               ],
