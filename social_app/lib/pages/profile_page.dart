@@ -17,12 +17,15 @@ class _ProfilePageState extends State<ProfilePage> {
   // creo una variabile di tipo Future<User>
   late Future<User> _future;
 
+  late TextEditingController _textEditingControllerPhone;
+
   // creo la initState (parte prima della build)
   @override
   void initState() {
     // richiamo la funzione passandogli come parametro l'id effettivo
     // essendo dentro la parte stateless ho bisogno di chiamare widget.
     _future = _fetchUser(widget.giveMeId);
+    _textEditingControllerPhone = TextEditingController();
 
     super.initState();
   }
@@ -49,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
             }
             // mi creo una variabile per semplificazione
             var user = snapshot.data;
+            _textEditingControllerPhone.text = user?.phone ?? '';
 
             return Column(
               children: [
@@ -133,11 +137,36 @@ class _ProfilePageState extends State<ProfilePage> {
                               TextButton(
                                 onPressed: () => showDialog(
                                     context: context,
-                                    builder: (context) => const AlertDialog(
-                                      title: Text('alert'),
-                                      actions: [TextField(
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Modifica'),
+                                      content: TextField(
+                                        controller: _textEditingControllerPhone,
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Annulla'),
+                                        ),TextButton(
+                                          onPressed: () async {
+                                            if(_textEditingControllerPhone.text.isNotEmpty) {
+                                              User _userOne = User(
+                                                  phone: _textEditingControllerPhone.text,
+                                                  id: user?.id
+                                              );
+                                              if(user == null) {
+                                                Navigator.of(context).pop();
+                                              } else {
+                                                await ApiUser.editUser(_userOne, _userOne.id!);
+                                                Navigator.of(context).pop(true);
+                                              }
 
-                                      )],
+                                            }
+                                          },
+                                          child: Text('Modifica'),
+                                        ),
+                                      ],
                                     ),
                                 ),
                                 child: Text(
@@ -181,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           }),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
+      //bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

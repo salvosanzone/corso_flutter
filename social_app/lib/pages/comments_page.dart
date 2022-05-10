@@ -27,6 +27,7 @@ class _CommentsPageState extends State<CommentsPage> {
   late bool _hasMoreComments;
   late Future<List<Comment>> _future;
   late int _page;
+  late bool _deleted;
 
   late TextEditingController _textEditingController;
   String? _message;
@@ -49,6 +50,7 @@ class _CommentsPageState extends State<CommentsPage> {
     _initUtente();
     _textEditingController = TextEditingController();
     _idPost = widget.giveMeIdPost;
+    _deleted = false;
     super.initState();
   }
 
@@ -122,55 +124,73 @@ class _CommentsPageState extends State<CommentsPage> {
 
                 }
                 // ciò che la ListView.builder mi restituisce
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: BorderSide(
-                        color: Colors.black.withOpacity(0.2),
-                        width: 1,
+                return Visibility(
+                  visible: !_deleted,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: BorderSide(
+                          color: Colors.black.withOpacity(0.2),
+                          width: 1,
+                        ),
                       ),
-                    ),
-                    shadowColor: Colors.black,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 36,
-                                backgroundImage: NetworkImage(
-                                  comment?[index].owner.picture ?? '',
-                                    ),
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Text(
-                                          '${comment?[index].owner.firstName} ${comment?[index].owner.lastName}',
-                                          style: const TextStyle(fontSize: 20),
-                                        ),
+                      shadowColor: Colors.black,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 36,
+                                  backgroundImage: NetworkImage(
+                                    comment?[index].owner.picture ?? '',
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 32.0),
-                            child: Text(
-                                comment?[index].message ?? '',
-                              style: const TextStyle(fontSize: 16),
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Text(
+                                            '${comment?[index].owner.firstName} ${comment?[index].owner.lastName}',
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () async {
+                                            late bool result;
+                                            if(comment?[index].id != null) {
+                                              result = await ApiComment.deleteComment(comment![index].id!);
+                                            }
+                                            if(result == true) {
+                                              setState(() {
+                                                _deleted = true;
+                                              });
+                                            }
+                                          },
+                                        ),
+
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(top: 32.0),
+                              child: Text(
+                                  comment?[index].message ?? '',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

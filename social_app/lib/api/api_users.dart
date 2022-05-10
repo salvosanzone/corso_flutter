@@ -75,8 +75,8 @@ class ApiUser {
 
 
   // chiamate PUT, gli passo il model Post
-  static Future<User> editUser(User post, String id) async {
-    Map<String,dynamic> _newUser = post.toJson();
+  static Future<User> editUser(User user, String id) async {
+    Map<String,dynamic> _newUser = user.toJson();
     _newUser.removeWhere((key, value) => value == null);
 
     final http.Response response = await http.put(

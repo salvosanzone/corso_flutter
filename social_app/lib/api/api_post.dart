@@ -123,19 +123,18 @@ class ApiPost {
 
   // chiamate DELETE
   static Future<bool> deletePost(String postId) async {
-    SharedPreferences ss = await SharedPreferences.getInstance();
+    /*SharedPreferences ss = await SharedPreferences.getInstance();
 
     String? userId = ss.getString('idKey');
 
     if(userId == null) {
-      throw Exception('Impossibile eliminare un post, non sei loggato');
+      throw Exception('Impossibile eliminare un commento, non sei loggato');
     }
-
+*/
     final http.Response response = await http.delete(
       Uri.parse('$baseUrl/post/$postId'),
       headers: {
         'app-id': '626fc963e000f68286f05f20',
-        'Content-Type': 'application/json'
       },
     );
 
@@ -143,8 +142,9 @@ class ApiPost {
       return true;
     }
 
-    throw Exception('Post eliminato: ${response.body}');
+    throw Exception('Errore eliminazione del post: ${response.body}');
   }
+
 
 
 }

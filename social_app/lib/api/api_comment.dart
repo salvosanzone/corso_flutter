@@ -87,28 +87,27 @@ class ApiComment {
 
 
   // chiamate DELETE
-  static Future<Comment> deleteComment(String postId) async {
-    SharedPreferences ss = await SharedPreferences.getInstance();
+  static Future<bool> deleteComment(String commentId) async {
+    /*SharedPreferences ss = await SharedPreferences.getInstance();
 
     String? userId = ss.getString('idKey');
 
     if(userId == null) {
       throw Exception('Impossibile eliminare un commento, non sei loggato');
     }
-
+*/
     final http.Response response = await http.delete(
-        Uri.parse('$baseUrl/comment/$postId'),
+        Uri.parse('$baseUrl/comment/$commentId'),
         headers: {
           'app-id': '626fc963e000f68286f05f20',
-          'Content-Type': 'application/json'
         },
     );
 
     if(response.statusCode == 200){
-      return Comment.fromJson(jsonDecode(response.body));
+      return true;
     }
 
-    throw Exception('Commento eliminato: ${response.body}');
+    throw Exception('Errore eliminazione commento: ${response.body}');
   }
 
 
