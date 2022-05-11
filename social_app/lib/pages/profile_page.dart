@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/api/api_users.dart';
 import 'package:social_app/models/user.dart';
+import 'package:social_app/models/location.dart';
 
 class ProfilePage extends StatefulWidget {
   // creo una variabile dove è contenuto l'id del profilo cliccato nella pagina home
@@ -16,6 +17,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<User> _future;
 
   late TextEditingController _textEditingControllerPhone;
+  late TextEditingController _textEditingControllerGender;
+  late TextEditingController _textEditingControllerTitle;
 
   // creo la initState (parte prima della build)
   @override
@@ -24,6 +27,8 @@ class _ProfilePageState extends State<ProfilePage> {
     // essendo dentro la parte stateless ho bisogno di chiamare widget.
     _future = _fetchUser(widget.giveMeId);
     _textEditingControllerPhone = TextEditingController();
+    _textEditingControllerGender = TextEditingController();
+    _textEditingControllerTitle = TextEditingController();
 
     super.initState();
   }
@@ -51,6 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
             // mi creo una variabile per semplificazione
             var user = snapshot.data;
             _textEditingControllerPhone.text = user?.phone ?? '';
+            _textEditingControllerGender.text = user?.gender ?? '';
+            _textEditingControllerTitle.text = user?.title ?? '';
 
             return Column(
               children: [
@@ -127,92 +134,168 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ListView(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 32),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Icon(Icons.phone, size: 24, color: Colors.orangeAccent,),
-                              TextButton(
-                                onPressed: () => showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      title: const Text('Modifica'),
-                                      content: TextField(
-                                        controller: _textEditingControllerPhone,
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('Annulla'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            if(_textEditingControllerPhone.text.isNotEmpty) {
-                                              User _userOne = User(
-                                                  phone: _textEditingControllerPhone.text,
-                                                  id: user?.id
-                                              );
-                                              if(user == null) {
-                                                Navigator.of(context).pop();
-                                              } else {
-                                                await ApiUser.editUser(_userOne, _userOne.id!);
-                                                Navigator.of(context).pop(true);
-                                              }
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: ListTile(
+                          leading: const Icon(Icons.phone, size: 24, color: Colors.orangeAccent,),
+                          trailing: TextButton(
+                            onPressed: () async {
+                              var popResult = await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: const Text('Modifica'),
+                                content: TextField(
+                                  controller: _textEditingControllerPhone,
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Annulla'),
+                                  ),
+                                  TextButton(
+                                    child: const Text('Modifica'),
+                                    onPressed: () async {
+                                      var _userOne = User(
+                                        id: user!.id,
+                                        phone: _textEditingControllerPhone.text
+                                      );
+                                      await ApiUser.editUser(_userOne, _userOne.id!);
+                                      Navigator.of(context).pop(true);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                              if(popResult == true && user != null) {
+                                setState(() {
+                                  _future = _fetchUser(user.id!);
+                                });
+                              }
+                            },
+                            child: Text(
+                                user!.phone ?? '', style: const TextStyle(fontSize: 16)
+                            ),
+                          ),
 
-                                            }
-                                          },
-                                          child: const Text('Modifica'),
-                                        ),
-                                      ],
-                                    ),
+                        ),
+                      ),
+
+                      if(user.gender != null)
+                        Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: ListTile(
+                          leading: const Icon(Icons.person, size: 24, color: Colors.orangeAccent,),
+                          trailing: TextButton(
+                            onPressed: () async {
+                              var popResult = await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
-                                child: Text(
-                                    user!.phone ?? '', style: const TextStyle(fontSize: 16)
+                                title: const Text('Modifica'),
+                                content: TextField(
+                                  controller: _textEditingControllerGender,
                                 ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Annulla'),
+                                  ),
+                                  TextButton(
+                                    child: const Text('Modifica'),
+                                    onPressed: () async {
+                                      var _userOne = User(
+                                        id: user.id,
+                                        gender: _textEditingControllerGender.text
+                                      );
+                                      await ApiUser.editUser(_userOne, _userOne.id!);
+                                      Navigator.of(context).pop(true);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                              if(popResult == true && user != null) {
+                                setState(() {
+                                  _future = _fetchUser(user.id!);
+                                });
+                              }
+                            },
+                            child: Text(
+                                user.gender ?? '', style: const TextStyle(fontSize: 16)
                             ),
-                          ],
+                          ),
+
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 32),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            if(user.location != null && user.location!.country != null)
-                            const Icon(Icons.pin_drop, size: 24, color: Colors.orangeAccent,),
-                            Text(
-                              user.location!.country,
-                              style: const TextStyle(fontSize: 16),
+
+
+
+                      if(user.title != null)
+                        Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: ListTile(
+                          leading: const Icon(Icons.title, size: 24, color: Colors.orangeAccent,),
+                          trailing: TextButton(
+                            onPressed: () async {
+                              var popResult = await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: const Text('Modifica'),
+                                content: TextField(
+                                  controller: _textEditingControllerTitle,
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Annulla'),
+                                  ),
+                                  TextButton(
+                                    child: const Text('Modifica'),
+                                    onPressed: () async {
+                                      var _userOne = User(
+                                        id: user.id,
+                                        title: _textEditingControllerTitle.text
+                                      );
+                                      await ApiUser.editUser(_userOne, _userOne.id!);
+                                      Navigator.of(context).pop(true);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                              if(popResult == true && user != null) {
+                                setState(() {
+                                  _future = _fetchUser(user.id!);
+                                });
+                              }
+                            },
+                            child: Text(
+                                user.title ?? '', style: const TextStyle(fontSize: 16)
                             ),
-                          ],
+                          ),
+
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 32),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            if(user.gender != null)
-                            const Icon(Icons.person, size: 24, color: Colors.orangeAccent,),
-                            Text(
-                                user.gender ?? '',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
                 )
               ],
             );
           }),
-      //bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

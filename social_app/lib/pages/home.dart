@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
                 Stack(
                   children: [
                     Container(
-                      height: 200,
+                      height: 150,
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(

@@ -26,12 +26,7 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   String? _userId;
   late bool _deleted;
-  /*Key _key = UniqueKey();
-  void refreshKey() {
-    setState(() {
-      _key = UniqueKey();
-    });
-  }*/
+
 
   // salvo all'interno di _userId, l'id dell'utente loggato
   Future<void> _initIdUser() async {
@@ -58,11 +53,7 @@ class _PostCardState extends State<PostCard> {
     }
 
 
-
-
-
     return Visibility(
-      //key: _key,
       visible: !_deleted,
       child: Padding(
         padding: const EdgeInsets.all(16.0),

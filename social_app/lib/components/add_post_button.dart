@@ -88,7 +88,6 @@ class _AddPostButtonState extends State<AddPostButton> {
                         ),
                       ),
                       Row(
-
                         children: [
                           TextButton(
                             child: const Text('Annulla'),

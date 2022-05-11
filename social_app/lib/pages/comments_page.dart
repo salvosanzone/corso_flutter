@@ -217,7 +217,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
         }),
       floatingActionButton: FloatingActionButton(
-        elevation: 10,
+        elevation: 20,
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () async {
           var popResult = await showModalBottomSheet(
@@ -233,17 +233,19 @@ class _CommentsPageState extends State<CommentsPage> {
                     children: [
                       TextField(
                         controller: _textEditingController,
-                        maxLines: 5,
                         onChanged: (value) {
                           _message = _textEditingController.text;
                         },
+                        decoration: const InputDecoration(
+                        hintText: 'Aggiungi un commento',
+                        icon: Icon(Icons.create)
+                  ),
                       ),
                       Row(
                         children: [
                           TextButton(
                             child: const Text('Annulla'),
                             onPressed: () {
-                              _message = null;
                               _textEditingController.clear();
                               Navigator.of(context).pop();
                             }
@@ -254,10 +256,8 @@ class _CommentsPageState extends State<CommentsPage> {
                               if(_message == null || _message!.isEmpty) {
                                 Navigator.of(context).pop();
                               }
-                              final response = await ApiComment.addComment(_idPost, _message!);
-                              _message = null;
+                              await ApiComment.addComment(_idPost, _message!);
                               _textEditingController.clear();
-
                               Navigator.of(context).pop(true);
                             },
                           ),
