@@ -38,6 +38,6 @@ class _CheckLoggatedState extends State<CheckLoggated> {
   Widget build(BuildContext context) {
 
     // se l id non c'è allora ritorna alla login page altrimenti va alla home
-    return _id == null? LoginPage() : Home();
+    return _id == null? const LoginPage() : const Home();
   }
 }

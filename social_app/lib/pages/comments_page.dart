@@ -2,10 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/api/api_comment.dart';
-import 'package:social_app/models/comment_response.dart';
 import 'package:social_app/models/comment.dart';
-import 'package:social_app/models/user.dart';
-import 'package:social_app/models/post.dart';
 class CommentsPage extends StatefulWidget {
 
   // creo una variabile che conterrà l'id del post
@@ -59,7 +56,6 @@ class _CommentsPageState extends State<CommentsPage> {
     // chiamata effettiva che noi facciamo ad internet ed è dentro result, il risultato della chiamata
     final result = await ApiComment.getCommentsByPost(widget.giveMeIdPost, page: _page);
 
-    print('risultato: $result');
 
     setState(() {
       _skipComments = _skipComments + result.limit;
@@ -259,7 +255,6 @@ class _CommentsPageState extends State<CommentsPage> {
                                 Navigator.of(context).pop();
                               }
                               final response = await ApiComment.addComment(_idPost, _message!);
-                              print('risposta $response');
                               _message = null;
                               _textEditingController.clear();
 

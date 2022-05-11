@@ -5,7 +5,8 @@ import 'package:social_app/api/api_post.dart';
 
 class EditPostBtn extends StatefulWidget {
   final Post post;
-  const EditPostBtn({required this.post, Key? key}) : super(key: key);
+  final Function callBack;
+  const EditPostBtn({required this.callBack, required this.post, Key? key}) : super(key: key);
 
   @override
   _EditPostBtnState createState() => _EditPostBtnState();
@@ -30,9 +31,9 @@ class _EditPostBtnState extends State<EditPostBtn> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.edit),
+      icon: const Icon(Icons.edit),
       onPressed: () async {
-        var updatePost = await showModalBottomSheet(
+        var popResult = await showModalBottomSheet(
             isScrollControlled : true,
             context: context,
             builder: (context) {
@@ -95,12 +96,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
                                 tags: _textEditingControllerTag.text.split(', '),
                                 owner: _userOne,
                               );
-                              if(_post == null) {
-                                Navigator.of(context).pop();
-                              }
-                               else {
                                 await ApiPost.editPost(_post, widget.post.id!);
-                              }
                               Navigator.of(context).pop(true);
                             }
                           },
@@ -112,6 +108,9 @@ class _EditPostBtnState extends State<EditPostBtn> {
               );
             }
         );
+        if(popResult == true) {
+          widget.callBack();
+        }
       },
     );
   }

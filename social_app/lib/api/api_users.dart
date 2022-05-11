@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:social_app/models/user.dart';
@@ -19,7 +18,6 @@ class ApiUser {
       }
     );
 
-    print(response.body);
 
     // se va tutto bene stampo altrimenti stampo l'errore
     if(response.statusCode == 200) {
@@ -38,7 +36,6 @@ class ApiUser {
         }
     );
 
-    print(response.body);
 
     if(response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/api/api_users.dart';
-import 'package:social_app/components/custom_bottom_navigation_bar.dart';
 import 'package:social_app/models/user.dart';
-import 'package:social_app/models/location.dart';
 
 class ProfilePage extends StatefulWidget {
   // creo una variabile dove è contenuto l'id del profilo cliccato nella pagina home
@@ -141,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      title: Text('Modifica'),
+                                      title: const Text('Modifica'),
                                       content: TextField(
                                         controller: _textEditingControllerPhone,
                                       ),
@@ -150,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('Annulla'),
+                                          child: const Text('Annulla'),
                                         ),
                                         TextButton(
                                           onPressed: () async {
@@ -168,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                             }
                                           },
-                                          child: Text('Modifica'),
+                                          child: const Text('Modifica'),
                                         ),
                                       ],
                                     ),

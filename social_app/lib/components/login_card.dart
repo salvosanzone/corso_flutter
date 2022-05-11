@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,11 +38,11 @@ class LoginCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                  '$firstName', style: TextStyle(color: Colors.white, fontSize: 24),
+                  firstName, style: const TextStyle(color: Colors.white, fontSize: 24),
                   ),Text(
-                  '$lasttName', style: TextStyle(color: Colors.white, fontSize: 24),
+                  lasttName, style: const TextStyle(color: Colors.white, fontSize: 24),
                   ),Text(
-                  '$id', style: TextStyle(color: Colors.white, fontSize: 10),
+                  id, style: const TextStyle(color: Colors.white, fontSize: 10),
                   ),
                 CircleAvatar(
                   radius: 36,

@@ -110,9 +110,6 @@ class _AddPostButtonState extends State<AddPostButton> {
                                 tags: _tag.split(', '),
                                 owner: _userOne,
                               );
-                              if(_post == null) {
-                                Navigator.of(context).pop();
-                              }
                               await ApiPost.addPost(_post);
                               _text = '';
                               _tag = '';
@@ -129,9 +126,7 @@ class _AddPostButtonState extends State<AddPostButton> {
               }
           );
           if(popResult == true) {
-            setState(() {
-              inizializeVariables();
-            });
+            widget.callBack();
           }
         }
     );

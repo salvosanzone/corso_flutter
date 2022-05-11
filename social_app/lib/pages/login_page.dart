@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app/api/api_comment.dart';
-import 'package:social_app/api/api_post.dart';
 import 'package:social_app/api/api_users.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:social_app/components/login_card.dart';
 
 class LoginPage extends StatelessWidget {

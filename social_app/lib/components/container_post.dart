@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/components/post_card.dart';
 import 'package:social_app/models/post.dart';
-import 'package:social_app/models/user.dart';
 import 'package:social_app/models/post_response.dart';
 import 'package:social_app/api/api_post.dart';
 

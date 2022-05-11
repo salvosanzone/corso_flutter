@@ -4,7 +4,6 @@ import 'package:social_app/components/container_post.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_app/components/custom_bottom_navigation_bar.dart';
 import 'package:social_app/pages/profile_page.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class Home extends StatefulWidget {
   final bool active;
@@ -16,9 +15,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Key _key = UniqueKey();
+
+  void refreshKey() {
+    setState(() {
+      _key = UniqueKey();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -95,28 +102,9 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      floatingActionButton: AddPostButton(callBack: ,),
+      floatingActionButton: AddPostButton(callBack: refreshKey),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(),
-      /*bottomNavigationBar: CurvedNavigationBar(
-          key: navigationKey,
-          backgroundColor: Colors.transparent,
-          height: 60,
-          color: Colors.orange.shade500,
-          items: [
-            IconButton(
-              icon: const Icon(Icons.add_circle, color: Colors.white,),
-              onPressed: () {
-                final navigationState = navigationKey.currentState!;
-                navigationState.setPage(0);
-              },
-            ),
-            const Icon(Icons.add_circle, color: Colors.white,),
-            const Icon(Icons.home, color: Colors.white,),
-            //const Icon(Icons.person, color: Colors.white,),
-          ],
-        ),
-      */
     );
   }
 }

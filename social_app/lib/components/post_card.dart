@@ -25,6 +25,12 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   String? _userId;
   late bool _deleted;
+  Key _key = UniqueKey();
+  void refreshKey() {
+    setState(() {
+      _key = UniqueKey();
+    });
+  }
 
   // salvo all'interno di _userId, l'id dell'utente loggato
   Future<void> _initIdUser() async {
@@ -46,9 +52,8 @@ class _PostCardState extends State<PostCard> {
     if (widget.post.publishDate != null) {
       // trasformo da stringa a DateTime
       final _data = DateTime.parse(widget.post.publishDate!);
-      print(
           // trasformo da DateTime a stringa nel formato che preferisco
-          DateFormat('d/M/y HH:mm').format(_data));
+          DateFormat('d/M/y HH:mm').format(_data);
     }
 
 
@@ -56,6 +61,7 @@ class _PostCardState extends State<PostCard> {
 
 
     return Visibility(
+      key: _key,
       visible: !_deleted,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -85,7 +91,6 @@ class _PostCardState extends State<PostCard> {
                             if(widget.post.owner.id != null)
                              GestureDetector(
                               onTap: () {
-                                print('cliccato');
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -202,7 +207,7 @@ class _PostCardState extends State<PostCard> {
                               padding: const EdgeInsets.all(8),
                               shadowColor: Colors.black,
                               label: Text(
-                                '#${tag}',
+                                '#$tag',
                                 style: const TextStyle(color: Colors.white),
                               )))
                           .toList(),
@@ -241,7 +246,7 @@ class _PostCardState extends State<PostCard> {
                           ),
 
                           //if(user?.id == '60d0fe4f5311236168a109ca')
-                          EditPostBtn(post: widget.post,),
+                          EditPostBtn(post: widget.post,callBack: refreshKey),
 
                           IconButton(
                             icon: const Icon(Icons.delete),
