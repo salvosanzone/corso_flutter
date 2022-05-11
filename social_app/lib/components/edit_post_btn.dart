@@ -33,6 +33,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
       icon: Icon(Icons.edit),
       onPressed: () async {
         var updatePost = await showModalBottomSheet(
+            isScrollControlled : true,
             context: context,
             builder: (context) {
               return Padding(
@@ -61,7 +62,7 @@ class _EditPostBtnState extends State<EditPostBtn> {
                             ],
                             image: const DecorationImage(
                               opacity: 0.9,
-                              image: NetworkImage(''),
+                              image: NetworkImage('http://www.blackelk.it/wp-content/uploads/2017/07/animali-selvatici-nelle-citt%C3%A0-BIG.jpg'),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(16),

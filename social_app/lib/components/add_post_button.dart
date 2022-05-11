@@ -4,7 +4,8 @@ import 'package:social_app/models/user.dart';
 import 'package:social_app/models/post.dart';
 
 class AddPostButton extends StatefulWidget {
-  const AddPostButton({Key? key}) : super(key: key);
+  final Function callBack;
+  const AddPostButton({required this.callBack, Key? key}) : super(key: key);
 
   @override
   _AddPostButtonState createState() => _AddPostButtonState();
@@ -127,6 +128,11 @@ class _AddPostButtonState extends State<AddPostButton> {
                 );
               }
           );
+          if(popResult == true) {
+            setState(() {
+              inizializeVariables();
+            });
+          }
         }
     );
   }

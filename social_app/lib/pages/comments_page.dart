@@ -172,6 +172,20 @@ class _CommentsPageState extends State<CommentsPage> {
                                               setState(() {
                                                 _deleted = true;
                                               });
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) => AlertDialog(
+                                                    shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(16),
+                                                    ),
+                                                    title: const Center(child: Text('Commento eliminato')),
+                                                    actions: [
+                                                      TextButton(
+                                                          child: const Text('OK'),
+                                                          onPressed: () => Navigator.of(context).pop()
+                                                      )
+                                                    ],
+                                                  ));
                                             }
                                           },
                                         ),

@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      floatingActionButton: const AddPostButton(),
+      floatingActionButton: AddPostButton(callBack: ,),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const CustomBottomNavigationBar(),
       /*bottomNavigationBar: CurvedNavigationBar(

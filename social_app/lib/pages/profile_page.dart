@@ -138,6 +138,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 onPressed: () => showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
                                       title: Text('Modifica'),
                                       content: TextField(
                                         controller: _textEditingControllerPhone,
@@ -148,7 +151,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             Navigator.of(context).pop();
                                           },
                                           child: Text('Annulla'),
-                                        ),TextButton(
+                                        ),
+                                        TextButton(
                                           onPressed: () async {
                                             if(_textEditingControllerPhone.text.isNotEmpty) {
                                               User _userOne = User(

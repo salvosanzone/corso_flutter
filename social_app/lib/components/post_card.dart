@@ -221,21 +221,25 @@ class _PostCardState extends State<PostCard> {
                         ],
                       ),
 
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context, MaterialPageRoute(
-                              builder: (context) {
-                                return CommentsPage(giveMeIdPost: widget.post.id!);
-                              }
-                          ),
-                          );
-                        },
-                        child: const Text('Commenti'),
-                      ),
 
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+
                         children: [
+
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return CommentsPage(giveMeIdPost: widget.post.id!);
+                                  }
+                              ),
+                              );
+                            },
+                            child: const Text('Commenti'),
+                          ),
+
                           //if(user?.id == '60d0fe4f5311236168a109ca')
                           EditPostBtn(post: widget.post,),
 
@@ -250,6 +254,21 @@ class _PostCardState extends State<PostCard> {
                                 setState(() {
                                   _deleted = true;
                                 });
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      title: const Center(child: Text('Post eliminato')),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text('OK'),
+                                          onPressed: () => Navigator.of(context).pop()
+                                        )
+                                      ],
+                                    )
+                                );
                               }
                             },
                           ),
