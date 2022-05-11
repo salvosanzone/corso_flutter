@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/api/api_users.dart';
 import 'package:social_app/models/user.dart';
-import 'package:social_app/models/location.dart';
 
 class ProfilePage extends StatefulWidget {
   // creo una variabile dove è contenuto l'id del profilo cliccato nella pagina home
@@ -222,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                             );
-                              if(popResult == true && user != null) {
+                              if(popResult == true) {
                                 setState(() {
                                   _future = _fetchUser(user.id!);
                                 });
@@ -276,7 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                             );
-                              if(popResult == true && user != null) {
+                              if(popResult == true) {
                                 setState(() {
                                   _future = _fetchUser(user.id!);
                                 });

@@ -35,6 +35,8 @@ class _PostCardState extends State<PostCard> {
       _userId = ss.getString('idKey');
     });
 
+    print('-----> $_userId');
+
   }
 
   @override
@@ -237,7 +239,7 @@ class _PostCardState extends State<PostCard> {
                             child: const Text('Commenti'),
                           ),
 
-                          //if(user?.id == '60d0fe4f5311236168a109ca')
+                          if(_userId == widget.post.owner.id)
                           EditPostBtn(post: widget.post,callBack: widget.refreshEditing),
 
                           IconButton(
