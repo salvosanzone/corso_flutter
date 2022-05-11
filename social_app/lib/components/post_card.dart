@@ -15,8 +15,9 @@ class PostCard extends StatefulWidget {
   // creo una variabile di tipo Post
   final Post post;
   final User? user;
+  final Function refreshEditing;
   // gli passo la classe Post e lo salvo in una variabile
-  const PostCard({this.user, required this.post, Key? key}) : super(key: key);
+  const PostCard({required this.refreshEditing, this.user, required this.post, Key? key}) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -25,12 +26,12 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   String? _userId;
   late bool _deleted;
-  Key _key = UniqueKey();
+  /*Key _key = UniqueKey();
   void refreshKey() {
     setState(() {
       _key = UniqueKey();
     });
-  }
+  }*/
 
   // salvo all'interno di _userId, l'id dell'utente loggato
   Future<void> _initIdUser() async {
@@ -61,7 +62,7 @@ class _PostCardState extends State<PostCard> {
 
 
     return Visibility(
-      key: _key,
+      //key: _key,
       visible: !_deleted,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -246,7 +247,7 @@ class _PostCardState extends State<PostCard> {
                           ),
 
                           //if(user?.id == '60d0fe4f5311236168a109ca')
-                          EditPostBtn(post: widget.post,callBack: refreshKey),
+                          EditPostBtn(post: widget.post,callBack: widget.refreshEditing),
 
                           IconButton(
                             icon: const Icon(Icons.delete),

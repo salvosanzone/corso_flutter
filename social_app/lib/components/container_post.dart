@@ -91,7 +91,7 @@ class _ContainerPostState extends State<ContainerPost> {
 
                     /*ho creato questa variabile perche il FutureBilder lo faccio qui
                     ma il widget PostCard è da un'altra parte*/
-                    return PostCard(post: listPost[index]);
+                    return PostCard(post: listPost[index], refreshEditing: inizializeInitVariables,);
                   });
             }
             if (snapshot.hasError) {

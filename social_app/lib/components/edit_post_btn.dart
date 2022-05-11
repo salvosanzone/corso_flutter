@@ -109,7 +109,9 @@ class _EditPostBtnState extends State<EditPostBtn> {
             }
         );
         if(popResult == true) {
-          widget.callBack();
+          setState(() {
+            widget.callBack();
+          });
         }
       },
     );
